@@ -1,0 +1,18 @@
+[Unit]
+Description=Extensible Docker Event Listener Daemon (Native C)
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=aaxyat
+Group=docker
+Restart=always
+RestartSec=3
+ExecStart=/docker/scripts/docker-event-listener -c /docker/config/events.conf -d /docker/scripts/events.d
+ExecReload=/bin/kill -HUP $MAINPID
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

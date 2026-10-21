@@ -1,0 +1,25 @@
+# /docker/config/events.conf
+#
+# Rule format:
+# <container_pattern>:<event_pattern> = <command_or_script>
+#
+# Patterns:
+# - Matches exact container name or '*' for wildcard
+# - Matches event substring (e.g. 'unhealthy', 'die', 'oom')
+#
+# Environment variables passed to handler:
+#   $CONTAINER_NAME — name of the container
+#   $EVENT_ACTION   — raw action string (e.g. 'health_status: unhealthy', 'die')
+#   $CONTAINER_ID   — full 64-char container ID
+
+# Gluetun VPN auto-healing
+gluetun:unhealthy = /docker/scripts/gluetun-watchdog.sh
+
+# Torrent / download client auto-recovery
+# qbittorrent:die = docker compose -f /docker/compose/qbittorrent/docker-compose.yml restart qbittorrent
+
+# Media servers
+# audiobookshelf:unhealthy = docker compose -f /docker/compose/audiobookshelf/docker-compose.yml restart audiobookshelf
+
+# Global Out-Of-Memory alert
+# *:oom = echo "OOM detected on container $CONTAINER_NAME" | wall
